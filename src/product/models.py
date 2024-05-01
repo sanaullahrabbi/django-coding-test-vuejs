@@ -14,6 +14,9 @@ class Product(TimeStampMixin):
     sku = models.SlugField(max_length=255, unique=True)
     description = models.TextField()
 
+    class Meta:
+        ordering = ["-id"]
+
 
 class ProductImage(TimeStampMixin):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -25,14 +28,35 @@ class ProductVariant(TimeStampMixin):
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ["-id"]
+
+    def __str__(self):
+        return self.variant_title
+
 
 class ProductVariantPrice(TimeStampMixin):
-    product_variant_one = models.ForeignKey(ProductVariant, on_delete=models.CASCADE, null=True,
-                                            related_name='product_variant_one')
-    product_variant_two = models.ForeignKey(ProductVariant, on_delete=models.CASCADE, null=True,
-                                            related_name='product_variant_two')
-    product_variant_three = models.ForeignKey(ProductVariant, on_delete=models.CASCADE, null=True,
-                                              related_name='product_variant_three')
+    product_variant_one = models.ForeignKey(
+        ProductVariant,
+        on_delete=models.CASCADE,
+        null=True,
+        related_name="product_variant_one",
+    )
+    product_variant_two = models.ForeignKey(
+        ProductVariant,
+        on_delete=models.CASCADE,
+        null=True,
+        related_name="product_variant_two",
+    )
+    product_variant_three = models.ForeignKey(
+        ProductVariant,
+        on_delete=models.CASCADE,
+        null=True,
+        related_name="product_variant_three",
+    )
     price = models.FloatField()
     stock = models.FloatField()
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ["-id"]
